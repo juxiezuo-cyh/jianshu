@@ -1,12 +1,28 @@
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import reducer from './reducer'; // 引入笔记本
+import createSagaMiddleware from 'redux-saga'
+// import thunk from 'redux-thunk';
+import TodoSagas from './sagas';
+const sagaMiddleware = createSagaMiddleware();
+
+
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    }) : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(sagaMiddleware)
+);
 
 // 把笔记本传递给管理员
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  enhancer,//redux的中间件
 );
 
+sagaMiddleware.run(TodoSagas);
 export default store;//图书管理员
 
 
