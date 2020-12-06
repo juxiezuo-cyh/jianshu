@@ -25,6 +25,7 @@ export default class TodoList1 extends Component {
         inputValue={this.state.inputValue} />
     )
   }
+  
   componentDidMount() {
     const action = getInitList();
     store.dispatch(action);
